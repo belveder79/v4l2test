@@ -39,7 +39,7 @@ public class MediaRecorder {
     public void setWatermark(int camidx, int x, int y, String watermark) {
         nativeSetWatermark(mRecorderContext, camidx, x, y, watermark);
     }
-
+/*
     public void setPreviewDisplay(int camidx, Object win) {
         nativeSetPreviewWindow(mRecorderContext, camidx, win);
     }
@@ -55,7 +55,7 @@ public class MediaRecorder {
     public void stopPreview(int camidx) {
         nativeStopPreview(mRecorderContext, camidx);
     }
-
+*/
     public void startRecording(int encidx, String filename) {
         nativeStartRecording(mRecorderContext, encidx, filename);
     }
@@ -103,13 +103,13 @@ public class MediaRecorder {
 
     private static native void nativeResetCamera (long ctxt, int camidx, int w, int h, int frate);
     private static native void nativeSetWatermark(long ctxt, int camidx, int x, int y, String watermark);
-
+/*
     private static native void nativeSetPreviewWindow(long ctxt, int camidx, Object win);
     private static native void nativeSetPreviewTarget(long ctxt, int camidx, Object win);
 
     private static native void nativeStartPreview(long ctxt, int camidx);
     private static native void nativeStopPreview (long ctxt, int camidx);
-
+*/
     private static native void nativeStartRecording(long ctxt, int encidx, String filename);
     private static native void nativeStopRecording (long ctxt, int encidx);
 

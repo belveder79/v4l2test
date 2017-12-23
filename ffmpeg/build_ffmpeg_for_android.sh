@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+#PATH=$PATH:/home/arth/dev/reyes/android-standalone-toolchain/bin
+
 EXTRA_CFLAGS="-I$PWD/ffmpeg-android-sdk/include -Os -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=softfp -D__ANDROID__ -DNDEBUG"
 EXTRA_LDFLAGS="-L$PWD/ffmpeg-android-sdk/lib -march=armv7-a"
 

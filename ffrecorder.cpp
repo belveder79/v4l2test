@@ -1,7 +1,10 @@
 // 包含头文件
 #include <limits.h>
-#include "micdev.h"
-#include "camdev.h"
+
+// CLEMENS
+//#include "camdev.h"
+//#include "micdev.h"
+
 #include "ffutils.h"
 #include "ffjpeg.h"
 #include "ffencoder.h"
@@ -116,7 +119,8 @@ static int camdev0_capture_callback_proc(void *r, void *data[AV_NUM_DATA_POINTER
     // use jpgenc to take photo
     if (recorder->take_photo_flags & (1 << 0)) {
         AVFrame frame;
-        frame.format = v4l2dev_pixfmt_to_ffmpeg_pixfmt(camdev_get_param(recorder->camdev[0], CAMDEV_PARAM_VIDEO_PIXFMT));
+        // CLEMENS
+        //frame.format = v4l2dev_pixfmt_to_ffmpeg_pixfmt(camdev_get_param(recorder->camdev[0], CAMDEV_PARAM_VIDEO_PIXFMT));
         frame.width  = recorder->params.cam_frame_width_0 ;
         frame.height = recorder->params.cam_frame_height_0;
         memcpy(frame.data    , data    , sizeof(void*)*AV_NUM_DATA_POINTERS);
@@ -147,7 +151,8 @@ static int camdev1_capture_callback_proc(void *r, void *data[AV_NUM_DATA_POINTER
     // use jpgenc to take photo
     if (recorder->take_photo_flags & (1 << 1)) {
         AVFrame frame;
-        frame.format = v4l2dev_pixfmt_to_ffmpeg_pixfmt(camdev_get_param(recorder->camdev[1], CAMDEV_PARAM_VIDEO_PIXFMT));
+        // CLEMENS
+        // frame.format = v4l2dev_pixfmt_to_ffmpeg_pixfmt(camdev_get_param(recorder->camdev[1], CAMDEV_PARAM_VIDEO_PIXFMT));
         frame.width  = recorder->params.cam_frame_width_1 ;
         frame.height = recorder->params.cam_frame_height_1;
         memcpy(frame.data    , data    , sizeof(data    ));
@@ -210,19 +215,20 @@ void *ffrecorder_init(FFRECORDER_PARAMS *params, void *extra)
     recorder->video_source[1] = 1;
     recorder->video_source[2] =-1;
 
-    recorder->micdev[0] = micdev_init(params->mic_sample_rate, params->mic_channel_num, extra);
+    // CLEMENS
+    // recorder->micdev[0] = micdev_init(params->mic_sample_rate, params->mic_channel_num, extra);
     if (!recorder->micdev[0]) {
         printf("failed to init micdev !\n");
     }
 
-    recorder->camdev[0] = camdev_init(params->cam_dev_name_0, params->cam_sub_src_0,
-        params->cam_frame_width_0, params->cam_frame_height_0, params->cam_frame_rate_0);
+    // recorder->camdev[0] = camdev_init(params->cam_dev_name_0, params->cam_sub_src_0,
+    //    params->cam_frame_width_0, params->cam_frame_height_0, params->cam_frame_rate_0);
     if (!recorder->camdev[0]) {
         printf("failed to init camdev0 !\n");
     }
 
-    recorder->camdev[1] = camdev_init(params->cam_dev_name_1, params->cam_sub_src_1,
-        params->cam_frame_width_1, params->cam_frame_height_1, params->cam_frame_rate_1);
+    // recorder->camdev[1] = camdev_init(params->cam_dev_name_1, params->cam_sub_src_1,
+    //     params->cam_frame_width_1, params->cam_frame_height_1, params->cam_frame_rate_1);
     if (!recorder->camdev[1]) {
         printf("failed to init camdev1 !\n");
     }
@@ -232,17 +238,18 @@ void *ffrecorder_init(FFRECORDER_PARAMS *params, void *extra)
         printf("failed to init jpgenc !\n");
     }
 
+    // CLEMENS
     // start micdev capture
-    micdev_start_capture(recorder->micdev[0]);
+    // micdev_start_capture(recorder->micdev[0]);
 
     // start camdev capture
-    camdev_capture_start(recorder->camdev[0]);
-    camdev_capture_start(recorder->camdev[1]);
+    // camdev_capture_start(recorder->camdev[0]);
+    // camdev_capture_start(recorder->camdev[1]);
 
     // set callback
-    micdev_set_callback(recorder->micdev[0], (void*)micdev0_capture_callback_proc, recorder);
-    camdev_set_callback(recorder->camdev[0], (void*)camdev0_capture_callback_proc, recorder);
-    camdev_set_callback(recorder->camdev[1], (void*)camdev1_capture_callback_proc, recorder);
+    // micdev_set_callback(recorder->micdev[0], (void*)micdev0_capture_callback_proc, recorder);
+    // camdev_set_callback(recorder->camdev[0], (void*)camdev0_capture_callback_proc, recorder);
+    // camdev_set_callback(recorder->camdev[1], (void*)camdev1_capture_callback_proc, recorder);
 
     return recorder;
 }
@@ -252,17 +259,18 @@ void ffrecorder_free(void *ctxt)
     FFRECORDER *recorder = (FFRECORDER*)ctxt;
     if (!recorder) return;
 
+    // CLEMENS
     // stop micdev capture
-    micdev_stop_capture(recorder->micdev[0]);
+    // micdev_stop_capture(recorder->micdev[0]);
 
     // stop camdev capture
-    camdev_capture_stop(recorder->camdev[0]);
-    camdev_capture_stop(recorder->camdev[1]);
+    // camdev_capture_stop(recorder->camdev[0]);
+    // camdev_capture_stop(recorder->camdev[1]);
 
     // free camdev & micdev
-    micdev_close(recorder->micdev[0]);
-    camdev_close(recorder->camdev[0]);
-    camdev_close(recorder->camdev[1]);
+    // micdev_close(recorder->micdev[0]);
+    // camdev_close(recorder->camdev[0]);
+    // camdev_close(recorder->camdev[1]);
 
     // free jpg encoder
     ffjpeg_encoder_free(recorder->jpgenc);
@@ -275,14 +283,16 @@ int ffrecorder_get_mic_mute(void *ctxt, int micidx)
 {
     FFRECORDER *recorder = (FFRECORDER*)ctxt;
     micidx %= MAX_MICDEV_NUM;
-    return micdev_get_mute(recorder->micdev[micidx]);
+    // CLEMENS
+    // return micdev_get_mute(recorder->micdev[micidx]);
 }
 
 void ffrecorder_set_mic_mute(void *ctxt, int micidx, int mute)
 {
     FFRECORDER *recorder = (FFRECORDER*)ctxt;
     micidx %= MAX_MICDEV_NUM;
-    micdev_set_mute(recorder->micdev[micidx], mute);
+    // CLEMENS
+    // micdev_set_mute(recorder->micdev[micidx], mute);
 }
 
 void ffrecorder_reset_camdev(void *ctxt, int camidx, int w, int h, int frate)
@@ -290,12 +300,14 @@ void ffrecorder_reset_camdev(void *ctxt, int camidx, int w, int h, int frate)
     FFRECORDER *recorder = (FFRECORDER*)ctxt;
     char       *dev_name = NULL;
     int         sub_src  = 0;
-    sp<ANativeWindow> win= NULL;
+    // CLEMENS
+    // sp<ANativeWindow> win= NULL;
     if (!recorder || camidx < 0 || camidx >= MAX_CAMDEV_NUM) return;
 
-    win = camdev_get_preview_window(recorder->camdev[camidx]);
-    camdev_capture_stop(recorder->camdev[camidx]);
-    camdev_close(recorder->camdev[camidx]);
+    // CLEMENS
+    // win = camdev_get_preview_window(recorder->camdev[camidx]);
+    // camdev_capture_stop(recorder->camdev[camidx]);
+    // camdev_close(recorder->camdev[camidx]);
 
     switch (camidx) {
     case 0:
@@ -320,19 +332,21 @@ void ffrecorder_reset_camdev(void *ctxt, int camidx, int w, int h, int frate)
         break;
     }
 
-    recorder->camdev[camidx] = camdev_init(dev_name, sub_src, w, h, frate);
-    camdev_capture_start(recorder->camdev[camidx]);
-    camdev_set_callback(recorder->camdev[camidx], (void*)(camidx ? camdev1_capture_callback_proc : camdev0_capture_callback_proc), recorder);
-    camdev_set_preview_window(recorder->camdev[camidx], win);
+    // CLEMENS
+    // recorder->camdev[camidx] = camdev_init(dev_name, sub_src, w, h, frate);
+    // camdev_capture_start(recorder->camdev[camidx]);
+    // camdev_set_callback(recorder->camdev[camidx], (void*)(camidx ? camdev1_capture_callback_proc : camdev0_capture_callback_proc), recorder);
+    // camdev_set_preview_window(recorder->camdev[camidx], win);
 }
 
 void ffrecorder_set_watermark(void *ctxt, int camidx, int x, int y, char *watermark)
 {
     FFRECORDER *recorder = (FFRECORDER*)ctxt;
     if (!recorder || camidx < 0 || camidx >= MAX_CAMDEV_NUM) return;
-    camdev_set_watermark(recorder->camdev[camidx], x, y, watermark);
+    // CLEMENS
+    // camdev_set_watermark(recorder->camdev[camidx], x, y, watermark);
 }
-
+/*
 void ffrecorder_preview_window(void *ctxt, int camidx, const sp<ANativeWindow> win)
 {
     FFRECORDER *recorder = (FFRECORDER*)ctxt;
@@ -360,7 +374,7 @@ void ffrecorder_preview_stop(void *ctxt, int camidx)
     if (!recorder || camidx < 0 || camidx >= MAX_CAMDEV_NUM) return;
     camdev_preview_stop(recorder->camdev[camidx]);
 }
-
+*/
 void ffrecorder_record_start(void *ctxt, int encidx, char *filename)
 {
     FFRECORDER *recorder  = (FFRECORDER*)ctxt;
@@ -423,11 +437,12 @@ void ffrecorder_record_start(void *ctxt, int encidx, char *filename)
     encoder_params.in_audio_channel_layout = recorder->params.mic_channel_num == 1 ? AV_CH_LAYOUT_MONO : AV_CH_LAYOUT_STEREO;
     encoder_params.in_audio_sample_fmt     = AV_SAMPLE_FMT_S16;
     encoder_params.in_audio_sample_rate    = recorder->params.mic_sample_rate;
-    encoder_params.in_video_width          = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_WIDTH );
-    encoder_params.in_video_height         = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_HEIGHT);
-    encoder_params.in_video_pixfmt         = v4l2dev_pixfmt_to_ffmpeg_pixfmt(camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_PIXFMT));
-    encoder_params.in_video_frame_rate_num = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_FRATE_NUM);
-    encoder_params.in_video_frame_rate_den = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_FRATE_DEN);
+    // CLEMENS
+    //encoder_params.in_video_width          = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_WIDTH );
+    //encoder_params.in_video_height         = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_HEIGHT);
+    //encoder_params.in_video_pixfmt         = v4l2dev_pixfmt_to_ffmpeg_pixfmt(camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_PIXFMT));
+    //encoder_params.in_video_frame_rate_num = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_FRATE_NUM);
+    //encoder_params.in_video_frame_rate_den = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_FRATE_DEN);
     encoder_params.out_filename            = filename;
     encoder_params.out_audio_bitrate       = abitrate;
     encoder_params.out_audio_channel_layout= achlayout;
@@ -442,9 +457,11 @@ void ffrecorder_record_start(void *ctxt, int encidx, char *filename)
     encoder_params.video_buffer_number     = 0; // use default
     encoder_params.video_timebase_type     = 0; // timebase by ms
 #ifdef ENABLE_H264_HWENC
-    encoder_params.video_encoder_type      = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_PIXFMT) == V4L2_PIX_FMT_MJPEG ? 2 : 1;
+    // CLEMENS
+    //encoder_params.video_encoder_type      = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_PIXFMT) == V4L2_PIX_FMT_MJPEG ? 2 : 1;
 #else
-    encoder_params.video_encoder_type      = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_PIXFMT) == V4L2_PIX_FMT_MJPEG ? 2 : 0;
+    // CLEMENS
+    //encoder_params.video_encoder_type      = camdev_get_param(camdev, CAMDEV_PARAM_VIDEO_PIXFMT) == V4L2_PIX_FMT_MJPEG ? 2 : 0;
 #endif
     recorder->enclose[encidx] = recorder->encoder[encidx];
     recorder->encoder[encidx] = ffencoder_init(&encoder_params);

@@ -74,33 +74,37 @@ JNIEXPORT void JNICALL Java_com_apical_dvr_MediaRecorder_nativeSetWatermark
  * Method:    nativeSetPreviewWindow
  * Signature: (JILjava/lang/Object;)V
  */
+/*
 JNIEXPORT void JNICALL Java_com_apical_dvr_MediaRecorder_nativeSetPreviewWindow
   (JNIEnv *, jclass, jlong, jint, jobject);
-
+*/
 /*
  * Class:     com_apical_dvr_MediaRecorder
  * Method:    nativeSetPreviewTarget
  * Signature: (JILjava/lang/Object;)V
  */
+/*
 JNIEXPORT void JNICALL Java_com_apical_dvr_MediaRecorder_nativeSetPreviewTarget
   (JNIEnv *, jclass, jlong, jint, jobject);
-
+*/
 /*
  * Class:     com_apical_dvr_MediaRecorder
  * Method:    nativeStartPreview
  * Signature: (JI)V
  */
+/*
 JNIEXPORT void JNICALL Java_com_apical_dvr_MediaRecorder_nativeStartPreview
   (JNIEnv *, jclass, jlong, jint);
-
+*/
 /*
  * Class:     com_apical_dvr_MediaRecorder
  * Method:    nativeStopPreview
  * Signature: (JI)V
  */
+/*
 JNIEXPORT void JNICALL Java_com_apical_dvr_MediaRecorder_nativeStopPreview
   (JNIEnv *, jclass, jlong, jint);
-
+*/
 /*
  * Class:     com_apical_dvr_MediaRecorder
  * Method:    nativeStartRecording

@@ -4,7 +4,10 @@
 #include <jni.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <utils/Log.h>
+// CLEMENS
+// #include <utils/Log.h>
+#include <android/log.h>
+
 #include "ffencoder.h"
 #include "h264hwenc.h"
 
@@ -87,7 +90,9 @@ void *h264hwenc_mediaserver_init(int iw, int ih, int ow, int oh, int frate, int 
 {
     H264ENC *enc = new H264ENC();
     if (!enc) {
-        ALOGE("failed to allocate h264hwenc context !\n");
+        // CLEMENS
+        // ALOGE("failed to allocate h264hwenc context !\n");
+        __android_log_print(ANDROID_LOG_ERROR, "h264hwenc_mediaserver", "failed to allocate h264hwenc context !\n");
         return NULL;
     }
 

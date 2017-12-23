@@ -6,7 +6,10 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include <utils/Log.h>
+// CLEMENS
+//#include <utils/Log.h>
+#include <android/log.h>
+
 #include "ffutils.h"
 #include "ffjpeg.h"
 #include "watermark.h"

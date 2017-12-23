@@ -1,13 +1,16 @@
 #ifndef __FFRECORDER_H__
 #define __FFRECORDER_H__
 
+// CLEMENS
+/*
 // 包含头文件
 #include <gui/Surface.h>
 #include <gui/SurfaceComposerClient.h>
 #include <gui/ISurfaceComposer.h>
 #include <ui/DisplayInfo.h>
-
 using namespace android;
+*/
+
 
 // 常量定义
 #define MAX_MICDEV_NUM     1
@@ -67,10 +70,11 @@ int   ffrecorder_get_mic_mute  (void *ctxt, int micidx);
 void  ffrecorder_set_mic_mute  (void *ctxt, int micidx, int mute);
 void  ffrecorder_reset_camdev  (void *ctxt, int camidx, int w, int h, int frate);
 void  ffrecorder_set_watermark (void *ctxt, int camidx, int x, int y, char *watermark);
-void  ffrecorder_preview_window(void *ctxt, int camidx, const sp<ANativeWindow> win);
-void  ffrecorder_preview_target(void *ctxt, int camidx, const sp<IGraphicBufferProducer>& gbp);
-void  ffrecorder_preview_start (void *ctxt, int camidx);
-void  ffrecorder_preview_stop  (void *ctxt, int camidx);
+// CLEMENS
+// void  ffrecorder_preview_window(void *ctxt, int camidx, const sp<ANativeWindow> win);
+// void  ffrecorder_preview_target(void *ctxt, int camidx, const sp<IGraphicBufferProducer>& gbp);
+// void  ffrecorder_preview_start (void *ctxt, int camidx);
+// void  ffrecorder_preview_stop  (void *ctxt, int camidx);
 void  ffrecorder_record_start  (void *ctxt, int encidx, char *filename);
 void  ffrecorder_record_stop   (void *ctxt, int encidx);
 void  ffrecorder_record_audio_source(void *ctxt, int encidx, int source);

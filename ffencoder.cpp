@@ -18,6 +18,9 @@ extern "C" {
 #include <libswresample/swresample.h>
 }
 
+// CLEMENS
+#include <android/log.h>
+
 #if defined(ENABLE_H264_HWENC) && defined(USE_MEDIACODEC_H264ENC)
 #include <jni.h>
 extern    JavaVM* g_jvm;
@@ -369,7 +372,7 @@ static int add_astream(FFENCODER *encoder)
 
     /* some formats want stream headers to be separate. */
     if (encoder->ofctxt->oformat->flags & AVFMT_GLOBALHEADER)
-        c->flags |= CODEC_FLAG_GLOBAL_HEADER;
+        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
     encoder->have_audio = 1;
     return 0;
@@ -427,7 +430,7 @@ static int add_vstream(FFENCODER *encoder)
 
     /* some formats want stream headers to be separate. */
     if (encoder->ofctxt->oformat->flags & AVFMT_GLOBALHEADER)
-        c->flags |= CODEC_FLAG_GLOBAL_HEADER;
+        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
     encoder->have_video = 1;
     return 0;
@@ -648,7 +651,10 @@ static void ffplayer_log_callback(void* ptr, int level, const char *fmt, va_list
     if (level <= av_log_get_level()) {
         char str[1024];
         vsprintf(str, fmt, vl);
-        ALOGD("%s", str);
+        
+        // CLEMENS
+        // ALOGD("%s", str);
+        __android_log_print(ANDROID_LOG_DEBUG, "ffencoder", "%s", str);
     }
 }
 
@@ -862,7 +868,9 @@ int ffencoder_audio(void *ctxt, void *data[AV_NUM_DATA_POINTERS], int nbsample, 
         // resample audio
         if (encoder->asampavail == 0) {
             if (0 != sem_trywait(&encoder->asemw)) {
-                ALOGD("audio frame dropped by encoder !\n");
+                // CLEMENS
+                //ALOGD("audio frame dropped by encoder !\n");
+                __android_log_print(ANDROID_LOG_DEBUG, "ffencoder", "audio frame dropped by encoder !\n");
                 return -1;
             }
             encoder->aframecur  = &encoder->aframes[encoder->atail];
@@ -913,7 +921,10 @@ int ffencoder_video(void *ctxt, void *data[AV_NUM_DATA_POINTERS], int linesize[A
     }
 
     if (0 != sem_trywait(&encoder->vsemw)) {
-        ALOGD("video frame dropped by encoder !\n");
+        // CLEMENS
+        // ALOGD("video frame dropped by encoder !\n");
+        __android_log_print(ANDROID_LOG_DEBUG, "ffencoder", "video frame dropped by encoder !\n");        
+
         encoder->next_vpts++;
         return -1;
     }

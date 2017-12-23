@@ -2,9 +2,11 @@
 #define __FFUTILS_H__
 
 // 包含头文件
-#include <linux/videodev2.h>
 #include <libavutil/pixfmt.h>
-#include <gui/Surface.h>
+// CLEMENS
+#include <time.h>
+// #include <gui/Surface.h>
+#include <linux/videodev2.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,12 +29,14 @@ inline int android_pixfmt_to_ffmpeg_pixfmt(int srcfmt)
 {
     // dst fmt
     int dst_fmt = 0;
+/* CLEMENS    
     switch (srcfmt) {
     case HAL_PIXEL_FORMAT_RGB_565:      dst_fmt = AV_PIX_FMT_RGB565;  break;
     case HAL_PIXEL_FORMAT_RGBX_8888:    dst_fmt = AV_PIX_FMT_BGR32;   break;
     case HAL_PIXEL_FORMAT_YV12:         dst_fmt = AV_PIX_FMT_YUV420P; break;
     case HAL_PIXEL_FORMAT_YCrCb_420_SP: dst_fmt = AV_PIX_FMT_NV12;    break;
     }
+*/
     return dst_fmt;
 }
 

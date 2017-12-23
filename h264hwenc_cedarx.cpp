@@ -4,7 +4,8 @@
 #include <jni.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <utils/Log.h>
+// CLEMENS
+// #include <utils/Log.h>
 #include "cedarx/h264enc.h"
 #include "ffencoder.h"
 #include "h264hwenc.h"
